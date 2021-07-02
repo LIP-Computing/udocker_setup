@@ -19,6 +19,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import sys
+import argparse
+
 __author__ = "udocker@lip.pt"
 __copyright__ = "Copyright 2021, LIP"
 __credits__ = ["udocker https://github.com/indigo-dc/udocker",
@@ -32,10 +34,24 @@ __license__ = "Licensed under the Apache License, Version 2.0"
 __version__ = "0.0.1"
 __date__ = "2021"
 
+
 def main():
     """Program start and exception handling"""
 
     exit_status = 0
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-V", "--version",
+                        help="show version",
+                        action="store_true")
+    parser.add_argument("-v", "--verbose",
+                        help="verbosity level 0 (quiet) - 5 (debug)")
+    parser.add_argument("-q", "--quiet",
+                        help="quiet (verbosity level 0)",
+                        action="store_true")
+    parser.add_argument("-c", "--conf",
+                        help="use configuration file")
+    parser.parse_args()
+
     sys.exit(exit_status)
 
 if __name__ == "__main__":
