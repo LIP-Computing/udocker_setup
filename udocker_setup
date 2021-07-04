@@ -19,6 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import sys
+import os
 import argparse
 
 __author__ = "udocker@lip.pt"
@@ -33,12 +34,75 @@ __credits__ = ["udocker https://github.com/indigo-dc/udocker",
 __license__ = "Licensed under the Apache License, Version 2.0"
 __version__ = "0.0.1"
 __date__ = "2021"
+STATUS_OK = 0
+STATUS_ERROR = 1
+
+
+class SetupCLI(object):
+    """Implements the command line interface.
+    These methods correspond directly to the commands that can
+    be invoked via the command line interface.
+    """
+
+    # def __init__(self):
+    #     self.localrepo
+
+    def do_version(self, args):
+        '''version: Show version'''
+        print(__version__)
+        return STATUS_OK
+
+    def do_install(self, args):
+        print('DOING Install')
+        return STATUS_OK
+
+    def do_show(self, args):
+        print('DOING Show')
+        return STATUS_OK
+
+    def do_avail(self, args):
+        pass
+
+    def do_download(self, args):
+        pass
+
+    def do_download_all(self, args):
+        pass
+
+    def do_upgrade(self, args):
+        pass
+
+    def do_upgrade_all(self, args):
+        pass
+
+    def do_verify(self, args):
+        pass
+
+    def do_delete(self, args):
+        pass
+
+    def do_delete_all(self, args):
+        pass
+
+    def do_delete_metadata(self, args):
+        pass
 
 
 def main():
     """Program start and exception handling"""
 
-    exit_status = 0
+    exit_status = STATUS_OK
+    cli = SetupCLI()
+    cmds_dict = {'version': cli.do_version, 'install': cli.do_install,
+                 'show': cli.do_show, 'avail': cli.do_avail,
+                 'download': cli.do_download, 
+                 'download_all': cli.do_download_all,
+                 'upgrade': cli.do_upgrade, 'upgrade_all': cli.do_upgrade_all,
+                 'verify': cli.do_verify, 'delete': cli.do_delete,
+                 'delete_all': cli.do_delete_all,
+                 'delete_metadata': cli.do_delete_metadata}
+
+    cmds = list(cmds_dict.keys())
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-v', '--verbose',
@@ -50,11 +114,7 @@ def main():
     parser.add_argument('-c', '--conf',
                         help='use configuration file')
     parser.add_argument('cmd', help='Command',
-                        choices=['version', 'install', 'show', 'avail',
-                                 'download', 'download-all',
-                                 'upgrade', 'upgrade-all',
-                                 'verify', 'delete', 'delete-all',
-                                 'delete-metadata'])
+                        choices=cmds)
     group.add_argument('--from',
                        metavar='url',
                        help='URL or local directory with modules')
@@ -63,8 +123,9 @@ def main():
                        help='destination directory')
     parser.add_argument('-m', '--modules', metavar='modules', 
                         help='Modules', nargs='+')
-    args = parser.parse_args()
 
+    args = parser.parse_args()
+    exit_status = cmds_dict[args.cmd](args)
     sys.exit(exit_status)
 
 if __name__ == "__main__":
