@@ -41,18 +41,29 @@ def main():
     exit_status = 0
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
-    parser.add_argument("-V", "--version",
-                        help="show version",
-                        action="store_true")
-    group.add_argument("-v", "--verbose",
-                       help="verbosity level 0 (quiet) - 5 (debug)")
-    group.add_argument("-q", "--quiet",
-                       help="quiet (verbosity level 0)",
-                       action="store_true")
-    parser.add_argument("-c", "--conf",
-                        help="use configuration file")
-    parser.add_argument("cmd", help="Command")
-    parser.parse_args()
+    group.add_argument('-v', '--verbose',
+                       metavar='LEVEL',
+                       help='verbosity level 0 (quiet) - 5 (debug)')
+    group.add_argument('-q', '--quiet',
+                       help='quiet (verbosity level 0)',
+                       action='store_true')
+    parser.add_argument('-c', '--conf',
+                        help='use configuration file')
+    parser.add_argument('cmd', help='Command',
+                        choices=['version', 'install', 'show', 'avail',
+                                 'download', 'download-all',
+                                 'upgrade', 'upgrade-all',
+                                 'verify', 'delete', 'delete-all',
+                                 'delete-metadata'])
+    group.add_argument('--from',
+                       metavar='url',
+                       help='URL or local directory with modules')
+    group.add_argument('--prefix',
+                       metavar='dst_dir',
+                       help='destination directory')
+    parser.add_argument('-m', '--modules', metavar='modules', 
+                        help='Modules', nargs='+')
+    args = parser.parse_args()
 
     sys.exit(exit_status)
 
