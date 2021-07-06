@@ -63,14 +63,9 @@ class Config(object):
 
     # udocker installation tarball the release is the minimum requirement
     # the actual tarball used in the installation can have a higher version
-    conf['tarball_release'] = "1.2.8"
-    conf['tarball'] = (
-        "https://download.ncg.ingrid.pt/"
-        "webdav/udocker/udocker-englib-1.2.8.tar.gz"
-        " "
-        "https://raw.githubusercontent.com"
-        "/jorge-lip/udocker-builds/master/tarballs/udocker-englib-1.2.8.tar.gz"
-    )
+    conf['metadata_url'] = [
+        "https://download.ncg.ingrid.pt/webdav/udocker/metadata.json"
+        ]
     conf['installretry'] = 3
     conf['autoinstall'] = True
     conf['config'] = "udocker.conf"
@@ -132,8 +127,6 @@ class Config(object):
             os.getenv("UDOCKER_LAYERS", Config.conf['layersdir'])
         Config.conf['containersdir'] = \
             os.getenv("UDOCKER_CONTAINERS", Config.conf['containersdir'])
-        Config.conf['tarball'] = \
-            os.getenv("UDOCKER_TARBALL", Config.conf['tarball'])
         Config.conf['default_execution_mode'] = \
             os.getenv("UDOCKER_DEFAULT_EXECUTION_MODE",
                       Config.conf['default_execution_mode'])
@@ -197,7 +190,6 @@ class SetupCLI(object):
 
     def do_delete_metadata(self, args):
         pass
-
 
 def main():
     """Program start and exception handling"""
